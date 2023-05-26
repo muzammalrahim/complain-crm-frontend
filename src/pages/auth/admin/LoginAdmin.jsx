@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import useLogin from "../../apiHooks/user/useLogin";
+import useLoginAdmin from "../../../apiHooks/admin/useLoginAdmin";
 import {
   Card,
   CardHeader,
@@ -13,19 +13,21 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-export function SignIn() {
-  const loginUser = useLogin();
-  const [number, setnumber] = useState("");
+export const SignInAdmin = () => {
+  const loginAdmin = useLoginAdmin();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (number.trim() === "" || password.trim() === "") {
-      toast.error("Please enter your Number and password");
+    if (email.trim() === "" || password.trim() === "") {
+      toast.error("Please enter your email and password");
       return;
     }
-    loginUser({ phoneNumber: number, password });
+
+    loginAdmin({ email, password });
+    // setEmail("");
     // setPassword("");
   };
 
@@ -44,19 +46,21 @@ export function SignIn() {
             className="mb-4 grid h-28 place-items-center"
           >
             <Typography variant="h3" color="white">
-              Sign In
+              Admin Sign In
             </Typography>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardBody className="flex flex-col gap-4">
               <Input
+                required
                 type="text"
-                label="Phone Number"
+                label="Email"
                 size="lg"
-                value={number}
-                onChange={(e) => setnumber(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <Input
+                required
                 type="password"
                 label="Password"
                 size="lg"
@@ -73,7 +77,7 @@ export function SignIn() {
               </Button>
               <Typography variant="small" className="mt-6 flex justify-center">
                 Don't have an account?
-                <Link to="/register">
+                <Link to="/auth/sign-up">
                   <Typography
                     as="span"
                     variant="small"
@@ -90,6 +94,6 @@ export function SignIn() {
       </div>
     </>
   );
-}
+};
 
-export default SignIn;
+export default SignInAdmin;

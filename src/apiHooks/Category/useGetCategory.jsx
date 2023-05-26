@@ -1,20 +1,15 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import useAxios from "@/apiConfig/axiosInstance";
 const useGetCategory = () => {
+  const api = useAxios();
+
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(false);
-  useEffect(() => {
-    getCatogery();
-  }, []);
 
   const getCatogery = async () => {
     setloading(true);
     try {
-      const { data, status } = await axios.get(
-        "http://localhost:1000/category"
-      );
-      //   const { data, status } = await axios.get("/category");
+      const { data, status } = await api.get("/category");
       if (status === 200) {
         setdata(data);
         setloading(false);

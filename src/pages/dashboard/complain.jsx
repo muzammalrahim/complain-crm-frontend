@@ -1,93 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Textarea } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
-// import { Textarea } from "@material-tailwind/react";
 import { Select, Option } from "@material-tailwind/react";
+import useGetCategory from "@/apiHooks/Category/useGetCategory";
+import { toast } from "react-hot-toast";
+import useAddComplain from "@/apiHooks/complain/useAddComplain";
+import { useUserContext } from "@/context/UserContext";
 export const Complain = () => {
-  const [name] = useState("Huzaifa");
-  const [userId, setUserId] = useState("123");
+  const { user } = useUserContext();
+  const { data, getCatogery } = useGetCategory();
+  const addComplain = useAddComplain();
+  useEffect(() => {
+    getCatogery();
+  }, []);
+  const [name, setname] = useState(user?.name);
+  const [email, setEmail] = useState(user?.email);
   const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState("");
-  const [email, setEmail] = useState("huzaifahkhan00@gmail.com");
   const [description, setDescription] = useState("");
+  // SubCategory List
+  const [subcategories, setsubcategories] = useState([]);
 
-  const categories = ["Technical", "Security", "Welfare", "Medical"];
-  const subcategories = ["Technical", "Security", "Welfare", "Medical"];
+  // Making Categories For Selectors
+  const handleParentSelect = (e) => {
+    setsubcategories([]);
+    const subCat = data?.find((o) => o.name === e);
+    if (subCat) {
+      setsubcategories(subCat?.subcategories);
+    }
+    setCategory(e);
+  };
+  // Handling Form Submit
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can handle the form submission
-    console.log("Submitted:", {
-      userId,
+    // Getting Category Id
+    const { _id } = data?.find((o) => o.name === category);
+    addComplain({
       name,
-      category,
+      category: _id,
       subcategory,
       email,
       description,
     });
     // Reset the form fields
-    return
-    setUserId("");
-
     setCategory("");
     setSubCategory("");
-    setEmail("");
+    // setEmail("");
     setDescription("");
   };
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div className="p-3"></div>
-        <label>Name:</label>
-        <Input
-          value={name}
-          // onChange={(e) => setName(e.target.value)}
-          size="lg"
-          disabled
-        />
-        <div className="p-3"></div>
-        <label>Email:</label>
-        <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          label="Email:"
-          size="lg"
-          disabled
-        />
-        <div className="p-5"></div>
+      <form className="space-y-10" onSubmit={handleSubmit}>
         <div>
-          <Select onChange={(e)=>setCategory(e)} 
-              
-              label="Categories" size="lg">
-            {categories.map((category, index) => (
-              <Option  key={index} value={category}  >
-                {category}
+          <label>Name:</label>
+          <Input
+            value={name}
+            onChange={(e) => setname(e.target.value)}
+            size="lg"
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            size="lg"
+          />
+        </div>
+        {/* Parent Selector */}
+        <div>
+          <Select
+            defaultValue={category}
+            onChange={(e) => handleParentSelect(e)}
+            label="Select Category"
+            size="lg"
+          >
+            {data?.map((category, index) => (
+              <Option key={index} value={category?.name}>
+                {category?.name}
               </Option>
             ))}
           </Select>
         </div>
 
-        <div className="p-5"></div>
+        {/* Child Selector */}
+
         <div>
-        <Select onChange={(e)=>setSubCategory(e)} 
-              
-              label="Categories" size="lg">
-            {categories.map((category, index) => (
-              <Option  key={index} value={category}  >
-                {category}
+          <Select
+            disabled={subcategories?.length > 0 ? false : true}
+            onChange={(e) => setSubCategory(e)}
+            label="Select Sub Category"
+            size="lg"
+          >
+            {subcategories?.map((category, index) => (
+              <Option key={index} value={category?._id}>
+                {category?.name}
               </Option>
             ))}
           </Select>
         </div>
 
-        <div className="p-5"></div>
         <Textarea
+          required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           label="Description:"
           size="lg"
           style={{ height: "100px", resize: "vertical" }}
         />
-        <div className="p-5"></div>
 
         <Button type="submit" color="green">
           Submit

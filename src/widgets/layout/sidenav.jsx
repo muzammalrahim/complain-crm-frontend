@@ -38,7 +38,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
             {brandName}
           </Typography>
         </Link>
-        <IconButton
+        {/* <IconButton
           variant="text"
           color="white"
           size="sm"
@@ -47,13 +47,13 @@ export function Sidenav({ brandImg, brandName, routes }) {
           onClick={() => setOpenSidenav(dispatch, false)}
         >
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
-        </IconButton>
+        </IconButton> */}
       </div>
       <div className="m-4">
         {routes.map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
             {title && (
-              <li className="mx-3.5 mt-4 mb-2">
+              <li key={key} className="mx-3.5 mt-4 mb-2">
                 <Typography
                   variant="small"
                   color={sidenavType === "dark" ? "white" : "blue-gray"}
@@ -63,34 +63,38 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 </Typography>
               </li>
             )}
-            {pages.map(({ icon, name, path }) => (
-              <li key={name}>
-                <NavLink to={`/${layout}${path}`}>
-                  {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color={
-                        isActive
-                          ? sidenavColor
-                          : sidenavType === "dark"
-                          ? "white"
-                          : "blue-gray"
-                      }
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                      {icon}
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
-                      >
-                        {name}
-                      </Typography>
-                    </Button>
-                  )}
-                </NavLink>
-              </li>
-            ))}
+            {pages?.map(({ icon, name, path }, key) => {
+              return (
+                <>
+                  <li className={name === "hide" ? "hidden" : ""} key={key}>
+                    <NavLink to={`/${layout}${path}`}>
+                      {({ isActive }) => (
+                        <Button
+                          variant={isActive ? "gradient" : "text"}
+                          color={
+                            isActive
+                              ? sidenavColor
+                              : sidenavType === "dark"
+                              ? "white"
+                              : "blue-gray"
+                          }
+                          className="flex items-center gap-4 px-4 capitalize"
+                          fullWidth
+                        >
+                          {icon}
+                          <Typography
+                            color="inherit"
+                            className="font-medium capitalize"
+                          >
+                            {name}
+                          </Typography>
+                        </Button>
+                      )}
+                    </NavLink>
+                  </li>
+                </>
+              );
+            })}
           </ul>
         ))}
       </div>
@@ -99,8 +103,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
 }
 
 Sidenav.defaultProps = {
-  brandImg: "/img/logo-ct.png",
-  brandName: "Material Tailwind React",
+  brandImg: "/img/awt_logo.png",
+  brandName: "AWT Complain Portal",
 };
 
 Sidenav.propTypes = {

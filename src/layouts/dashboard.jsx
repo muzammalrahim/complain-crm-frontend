@@ -7,24 +7,30 @@ import {
   Configurator,
   Footer,
 } from "@/widgets/layout";
-import routes from "@/routes";
+// import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import { useUserContext } from "@/context/UserContext";
+import welcome2 from "/img/welcome2.svg";
+import userRoutes from "@/routes";
 
 export function Dashboard() {
+  const routes = userRoutes();
+  console.log(routes, "Routes From Dashboard");
+
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
-
+  const { user } = useUserContext();
   return (
-    <div className="min-h-screen bg-blue-gray-50/50">
+    <div className="min-h-screen  bg-blue-gray-50/50">
       <Sidenav
         routes={routes}
         brandImg={
-          sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
+          sidenavType === "dark" ? "/img/awt_logo.png" : "/img/awt_logo.png"
         }
       />
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
-        <Configurator />
+        {/* <Configurator />
         <IconButton
           size="lg"
           color="white"
@@ -33,7 +39,7 @@ export function Dashboard() {
           onClick={() => setOpenConfigurator(dispatch, true)}
         >
           <Cog6ToothIcon className="h-5 w-5" />
-        </IconButton>
+        </IconButton>{" "} */}
         <Routes>
           {routes.map(
             ({ layout, pages }) =>

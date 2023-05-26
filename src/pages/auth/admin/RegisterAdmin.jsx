@@ -1,7 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import useLogin from "../../apiHooks/user/useLogin";
+import useRegister from "../../../apiHooks/admin/useRegisterAdmin";
 import {
   Card,
   CardHeader,
@@ -13,20 +12,27 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-export function SignIn() {
-  const loginUser = useLogin();
-  const [number, setnumber] = useState("");
+export function SignUpAdmin() {
+  const registerUser = useRegister();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (number.trim() === "" || password.trim() === "") {
-      toast.error("Please enter your Number and password");
-      return;
-    }
-    loginUser({ phoneNumber: number, password });
-    // setPassword("");
+    // Getting Category Id
+    // const { _id } = data?.find((o) => o.name === category);
+    registerUser({
+      name,
+      email,
+      password,
+      confirmPassword
+    });
+    // Reset the form fields
+    // setName("");
+    // setEmail("");
+    setPassword("");
+    setConfirmPassword("")
   };
 
   return (
@@ -44,17 +50,23 @@ export function SignIn() {
             className="mb-4 grid h-28 place-items-center"
           >
             <Typography variant="h3" color="white">
-              Sign In
+              Sign Up
             </Typography>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardBody className="flex flex-col gap-4">
               <Input
-                type="text"
-                label="Phone Number"
+                label="Name"
                 size="lg"
-                value={number}
-                onChange={(e) => setnumber(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                type="email"
+                label="Email"
+                size="lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <Input
                 type="password"
@@ -63,24 +75,34 @@ export function SignIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <Input
+                type="password"
+                label="Confirm Password"
+                size="lg"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+
               <div className="-ml-2.5">
-                <Checkbox label="Remember Me" />
+                <Checkbox label="I agree the Terms and Conditions" />
               </div>
             </CardBody>
+
             <CardFooter className="pt-0">
               <Button variant="gradient" fullWidth type="submit">
-                Sign In
+                Register
               </Button>
+
               <Typography variant="small" className="mt-6 flex justify-center">
-                Don't have an account?
-                <Link to="/register">
+                Already have an account?
+                <Link to="/auth/sign-in">
                   <Typography
                     as="span"
                     variant="small"
                     color="blue"
                     className="ml-1 font-bold"
                   >
-                    Sign up
+                    Sign in
                   </Typography>
                 </Link>
               </Typography>
@@ -92,4 +114,4 @@ export function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUpAdmin;
