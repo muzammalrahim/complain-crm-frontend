@@ -12,8 +12,9 @@ export const ShowFeedback = () => {
   const { loading, feedbackList } = useGetFeedback();
   return (
     <div className="flex ">
-      {feedbackList.map((feedback) => (
+      {feedbackList.map((feedback, index) => (
         <Card
+          key={index}
           color="white"
           shadow={false}
           className="border-sky-500 m-5 w-full max-w-[26rem] border-2 border-solid p-5"
@@ -45,7 +46,9 @@ export const ShowFeedback = () => {
                 <Typography color="blue-gray">
                   {feedback.userId.phoneNumber}
                 </Typography>
-                <div className="font-bold">{feedback.complainId.official.name}</div>
+                <div className="font-bold">
+                  {feedback.complainId.official.name}
+                </div>
               </div>
               <Typography color="blue-gray">
                 {formatDistanceToNow(new Date(feedback.date), {
