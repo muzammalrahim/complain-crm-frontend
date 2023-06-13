@@ -13,8 +13,9 @@ import useGetEmployees from "@/apiHooks/employee/useGetEmployees";
 import useUpdateStatus from "@/apiHooks/status/useUpdateStatus";
 import StatusSelect from "@/widgets/complain/StatusSelect";
 import useStatus from "@/apiHooks/status/useStatus";
-import ComplainLoading from "../loading/ComplainLoading";
 import UserData from "./user-data-popup";
+import { Spinner } from "@material-tailwind/react";
+
 import {
   Popover,
   PopoverHandler,
@@ -44,11 +45,7 @@ const ComplainTable = ({
   console.log(complains);
   return (
     <>
-      {loading && (
-        <div className="flex  items-center justify-center">
-          <ComplainLoading />
-        </div>
-      )}
+      {loading && <div>Loading...</div>}
       <div>
         <div className="flex flex-col">
           {/* <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
