@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useGetComplain from "@/apiHooks/complain/useGetComplain";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 import { Typography } from "@material-tailwind/react";
 import { ArrowPathIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import EmployeeSelect from "@/widgets/employee/EmployeeSelect";
@@ -14,6 +14,13 @@ import useUpdateStatus from "@/apiHooks/status/useUpdateStatus";
 import StatusSelect from "@/widgets/complain/StatusSelect";
 import useStatus from "@/apiHooks/status/useStatus";
 import ComplainLoading from "../loading/ComplainLoading";
+import UserData from "./user-data-popup";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Button,
+} from "@material-tailwind/react";
 const ComplainTable = ({
   loading,
   fetchComplains,
@@ -34,6 +41,7 @@ const ComplainTable = ({
   setworker,
   handleUpdate,
 }) => {
+  console.log(complains);
   return (
     <>
       {loading && (
@@ -43,9 +51,11 @@ const ComplainTable = ({
       )}
       <div>
         <div className="flex flex-col">
-          <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-              <div className="overflow-hidden">
+          {/* <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="overflow-hidden"> */}
+          <div className="overflow-auto hover:overflow-scroll">
+            <div>
+              <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 {complains?.length < 0 && !loading && (
                   <div className="flex h-screen items-center justify-center text-3xl text-gray-700">
                     No Complains Found
@@ -75,7 +85,11 @@ const ComplainTable = ({
                             {item.subcategory.name}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4 font-medium">
-                            {item?.name}
+                            <UserData
+                              userName={item?.name}
+                              id={item?._id}
+                              userId={item?.userId}
+                            />
                           </td>
 
                           <td className="whitespace-nowrap px-6 py-4">
@@ -105,8 +119,37 @@ const ComplainTable = ({
                               </span>
                             )}
                           </td>
+                          {admin && (
+                            <td className="whitespace-nowrap px-6 py-4">
+                              <Popover
+                                placement="bottom"
+                                animate={{
+                                  mount: { scale: 1, y: 0 },
+                                  unmount: { scale: 0, y: 25 },
+                                }}
+                              >
+                                <PopoverHandler>
+                                  <Button variant="text">
+                                    {item.official?.name}
+                                  </Button>
+                                </PopoverHandler>
+                                <PopoverContent>
+                                  {/* {item.statusChangeTime} */}
+                                  {item.statusChangeTime && (
+                                    <span>
+                                      {formatDistanceToNow(
+                                        new Date(item.statusChangeTime),
+                                        { addSuffix: true }
+                                      )}
+                                    </span>
+                                  )}
+                                </PopoverContent>
+                              </Popover>
+                            </td>
+                          )}
+
                           <td className="whitespace-nowrap px-6 py-4">
-                            {formatDistanceToNow(new Date(item.date), {
+                            {formatDistanceToNowStrict(new Date(item.date), {
                               addSuffix: true,
                             })}
                           </td>

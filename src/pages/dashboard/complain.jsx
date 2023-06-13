@@ -63,6 +63,7 @@ export const Complain = () => {
             value={name}
             onChange={(e) => setname(e.target.value)}
             size="lg"
+            disabled
           />
         </div>
         <div>
@@ -71,6 +72,7 @@ export const Complain = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             size="lg"
+            disabled
           />
         </div>
         {/* Parent Selector */}
