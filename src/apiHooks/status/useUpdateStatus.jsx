@@ -14,6 +14,7 @@ const useUpdateStatus = () => {
       const { data, status } = await api.post("/update-status", payload);
       if (status === 200) {
         toast.success(data?.message);
+        return true
       }
     } catch (e) {
       console.log(e);

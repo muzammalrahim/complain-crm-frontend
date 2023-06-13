@@ -106,7 +106,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
 
 Sidenav.defaultProps = {
   brandImg: "/img/awt_logo.png",
-  brandName: "AWT Complain Portal",
+  brandName: "AWT Complaint Portal",
 };
 
 Sidenav.propTypes = {
