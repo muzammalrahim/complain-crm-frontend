@@ -18,7 +18,7 @@ const OfficialRoutes = {
     },
     {
       icon: <BookmarkIcon {...icon} />,
-      name: "Assigned Complains",
+      name: "Complaints",
       path: "/complain-list",
       element: <ComplainList official admin />,
     },

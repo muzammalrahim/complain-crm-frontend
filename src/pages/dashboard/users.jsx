@@ -5,21 +5,28 @@ import React, { useState } from "react";
 import ShowButtons from "@/widgets/htmlComponents/ShowButtons";
 export const Users = () => {
   const [show, setshow] = useState(0);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  console.log("AAA", user.role);
   return (
     <>
       <div>
-        {/* <ShowButtons
+        {/* <ShowButtons Official
           button1={"View Officers"}
           button2={"View Residents"}
           setshow={setshow}
         /> */}
         <div className="mt-10 flex items-center justify-center gap-x-6">
-          <Button onClick={() => setshow(0)}>{"View Officials"}</Button>
-          <Button onClick={() => setshow(1)}>{"View Residents"}</Button>
-          <Button onClick={() => setshow(2)}>{"View Committee"}</Button>
+          <Button onClick={() => setshow(0)}>{"View Residents"}</Button>
+          {user.role != "Official" && (
+            <>
+              <Button onClick={() => setshow(1)}>{"View Officers"}</Button>
+              <Button onClick={() => setshow(2)}>{"View Committee"}</Button>
+            </>
+          )}
         </div>
         <div className="mt-10 flex items-center justify-center ">
-          {show === 0 && (
+          {show === 1 && (
             <div className="">
               <ViewEmployee />
             </div>
@@ -29,7 +36,7 @@ export const Users = () => {
               <ViewEmployee committee />
             </div>
           )}
-          {show === 1 && (
+          {show === 0 && (
             <div className="">
               <Residents />
             </div>

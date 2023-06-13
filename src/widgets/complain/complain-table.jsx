@@ -126,20 +126,18 @@ const ComplainTable = ({
                                 }}
                               >
                                 <PopoverHandler>
-                                  <>
-                                    <Button
-                                      variant="text"
-                                      disabled={!item.official?.name}
-                                    >
-                                      {item.official?.name ? (
-                                        <div>{item.official.name}</div>
-                                      ) : (
-                                        <div className="text-gray-800">
-                                          Not Assigned
-                                        </div>
-                                      )}
-                                    </Button>
-                                  </>
+                                  <Button
+                                    variant="text"
+                                    disabled={!item.official?.name}
+                                  >
+                                    {item.official?.name ? (
+                                      <div>{item.official.name}</div>
+                                    ) : (
+                                      <div className="text-gray-800">
+                                        Not Assigned
+                                      </div>
+                                    )}
+                                  </Button>
                                 </PopoverHandler>
                                 <PopoverContent>
                                   {/* {item.statusChangeTime} */}
@@ -167,7 +165,7 @@ const ComplainTable = ({
                             )}
                             {admin && (
                               <StatusSelect
-                              fetchComplains={fetchComplains}
+                                fetchComplains={fetchComplains}
                                 disable={official}
                                 data={statuses}
                                 setvalue={setstatus}
