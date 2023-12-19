@@ -22,6 +22,7 @@ import {
   PopoverContent,
   Button,
 } from "@material-tailwind/react";
+import Description from "../htmlComponents/Description";
 const ComplainTable = ({
   loading,
   fetchComplains,
@@ -42,6 +43,21 @@ const ComplainTable = ({
   setworker,
   handleUpdate,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // You can adjust the number of items per page
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = complains.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginateComplains = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  useEffect(() => {
+    paginateComplains(1); // Set initial page to 1 when complains change
+  }, [complains]);
+
   console.log(complains);
   return (
     <>
@@ -53,35 +69,37 @@ const ComplainTable = ({
           <div className="overflow-x-auto ">
             <div>
               <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                {complains?.length < 0 && !loading && (
+                {currentItems?.length < 0 && !loading && (
                   <div className="flex h-screen items-center justify-center text-3xl text-gray-700">
                     No Complains Found
                   </div>
                 )}
                 {/* {loading && complains.length > 0 && <span>Loading...</span>} */}
-                {!loading && complains?.length > 0 && (
+                {!loading && currentItems?.length > 0 && (
                   <table className="min-w-full text-left text-sm font-light ease-in">
                     <thead className="dark:border-neutral-500 border-b font-medium">
                       <tr>
                         {headings?.map((e, index) => (
-                          <th key={index}>{e}</th>
+                          <th className="" key={index}>
+                            {e}
+                          </th>
                         ))}
                       </tr>
                     </thead>
 
                     <tbody>
-                      {complains?.map((item) => (
+                      {currentItems?.map((item) => (
                         <tr
                           key={item?._id}
                           className="dark:border-neutral-500 border-b"
                         >
-                          <td className="whitespace-nowrap px-6 py-4 font-medium">
+                          <td className=" whitespace-nowrap  px-3 py-2 font-medium">
                             {item.category.name}
                           </td>
-                          <td className="whitespace-nowrap px-6 py-4">
+                          <td className=" whitespace-nowrap  px-3 py-2">
                             {item.subcategory.name}
                           </td>
-                          <td className="whitespace-nowrap px-6 py-4 font-medium">
+                          <td className=" whitespace-nowrap  px-3 py-2 font-medium">
                             <UserData
                               userName={item?.name}
                               id={item?._id}
@@ -89,11 +107,15 @@ const ComplainTable = ({
                             />
                           </td>
 
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <span>{item.description?.substring(0, 40)}</span>
+                          {/* <td className="whitespace-nowrap px-3 py-2">
+                            <span className="bred w-52">
+                              short {item.description?.substring(0, 40)}
+                            </span>
 
                             {show.id === item._id && show.display && (
-                              <span>{item.description?.substring(40)}</span>
+                              <span>
+                                long {item.description?.substring(40)}
+                              </span>
                             )}
 
                             {item.description.length > 40 && (
@@ -115,9 +137,12 @@ const ComplainTable = ({
                                   : "...See More"}
                               </span>
                             )}
+                          </td> */}
+                          <td>
+                            <Description description={item?.description} />
                           </td>
                           {admin && (
-                            <td className="whitespace-nowrap px-6 py-4">
+                            <td className=" whitespace-nowrap px-3 py-2">
                               <Popover
                                 placement="bottom"
                                 animate={{
@@ -154,12 +179,12 @@ const ComplainTable = ({
                             </td>
                           )}
 
-                          <td className="whitespace-nowrap px-6 py-4">
+                          <td className=" whitespace-nowrap px-3 py-2">
                             {formatDistanceToNowStrict(new Date(item.date), {
                               addSuffix: true,
                             })}
                           </td>
-                          <td className="whitespace-nowrap px-6 py-4">
+                          <td className=" whitespace-nowrap px-3 py-2">
                             {!admin && (
                               <ComplainStatus name={item?.status?.name} />
                             )}
@@ -174,7 +199,7 @@ const ComplainTable = ({
                               />
                             )}
                           </td>
-                          <td className="whitespace-nowrap px-6 py-4">
+                          <td className=" whitespace-nowrap px-3 py-2">
                             {admin && (
                               <WorkerSelect
                                 disable={official}
@@ -189,6 +214,29 @@ const ComplainTable = ({
                       ))}
                     </tbody>
                   </table>
+                )}
+                {/* Pagination */}
+                {!loading && complains?.length > itemsPerPage && (
+                  <div className="mt-4 flex justify-center">
+                    <ul className="flex space-x-2">
+                      {Array.from({
+                        length: Math.ceil(complains.length / itemsPerPage),
+                      }).map((_, index) => (
+                        <li key={index}>
+                          <button
+                            className={`px-2 py-1 ${
+                              currentPage === index + 1
+                                ? "bg-blue-500 text-white"
+                                : "bg-gray-300"
+                            }`}
+                            onClick={() => paginateComplains(index + 1)}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             </div>

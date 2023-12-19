@@ -3,7 +3,7 @@ import SelectStatus from "../htmlComponents/StatusSelect";
 import { Button, Input } from "@material-tailwind/react";
 import DateSelector from "../htmlComponents/DateSelector";
 import SearchInput from "../htmlComponents/SearchInput";
-
+import ExportPdfPopup from "./ExportPdfPopup";
 const ComplainSearch = ({ fetchComplains }) => {
   const [searchData, setsearchData] = useState({});
 
@@ -20,12 +20,11 @@ const ComplainSearch = ({ fetchComplains }) => {
       fetchComplains({ ...searchData, userId });
     }
     handleReset();
-  }
-    const handleReset = () => {
-      setuserId('');
-      setsearchData({});
-    };
-
+  };
+  const handleReset = () => {
+    setuserId("");
+    setsearchData({});
+  };
 
   return (
     <>
@@ -35,8 +34,9 @@ const ComplainSearch = ({ fetchComplains }) => {
 
         <SearchInput setuserId={setuserId} setSearch={setsearchData} />
 
-
         <Button onClick={handleSearch}>Search Complaints</Button>
+        {/* <Button onClick={handleSearch}>Export as PDF</Button> */}
+        <ExportPdfPopup />
       </div>
     </>
   );
