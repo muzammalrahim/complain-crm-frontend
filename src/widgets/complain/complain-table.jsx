@@ -188,7 +188,7 @@ const ComplainTable = ({
                             {!admin && (
                               <ComplainStatus name={item?.status?.name} />
                             )}
-                            {admin && (
+                            {admin && statuses?.length > 0 && (
                               <StatusSelect
                                 fetchComplains={fetchComplains}
                                 disable={official}
