@@ -13,9 +13,10 @@ import {
   TagIcon,
   UserCircleIcon,
   UserPlusIcon,
-  ChatBubbleBottomCenterIcon
+  ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/solid";
 import Test from "./Test";
+import ComplainPdf from "../complain/ComplainPdf";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -33,6 +34,12 @@ const AdminRoutes = {
       name: "Complaints",
       path: "/complain-list",
       element: <ComplainList admin />,
+    },
+    {
+      icon: <FlagIcon {...icon} />,
+      name: "hide",
+      path: "/pdf",
+      element: <ComplainPdf />,
     },
     {
       icon: <TagIcon {...icon} />,
