@@ -8,41 +8,40 @@ import {
 } from "@material-tailwind/react";
 import ExportDatePickerPopup from "./ExportDatePickerPopup";
 import useAxios from "@/apiConfig/axiosInstance";
-import { useNavigate } from "react-router-dom";
 const ExportPdfPopup = () => {
-  const navigate = useNavigate();
-
   const api = useAxios();
   const [date, setDate] = useState({
     startDate: null,
     endDate: null,
   });
 
-  const handlePDF = async () => {
+  const handleDownloadCSV = async () => {
     try {
       // Make a POST request to generate the CSV on button click
-      const response = await api.post("/export-complains-json", {
-        date,
-      });
+      const response = await api.post("/export-complains", { date });
+
       // Extract CSV data from the response
-      const complains = response.data;
-      console.log(complains);
-      navigate("/pdf", { state: { complains, date } });
+      const csvData = response.data;
 
-      // // Create a Blob and initiate the download
-      // const blob = new Blob([csvData], { type: "text/csv" });
-      // const url = URL.createObjectURL(blob);
+      // Create a Blob and initiate the download
+      const blob = new Blob([csvData], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
 
-      // const a = document.createElement("a");
-      // a.href = url;
-      // a.download = `${"output - " + Date.now() + ".csv"}`;
-      // document.body.appendChild(a);
-      // a.click();
-      // document.body.removeChild(a);
-      // URL.revokeObjectURL(url);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${"output - " + Date.now() + ".csv"}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading CSV:", error);
     }
+  };
+
+  const handleExportModal = () => {
+    console.log("handleModal");
+    handleDownloadCSV();
   };
   return (
     <>
@@ -56,7 +55,7 @@ const ExportPdfPopup = () => {
       >
         <PopoverHandler>
           <Button variant="text" onClick={() => {}}>
-            Export as PDF
+            Export as CSV
           </Button>
         </PopoverHandler>
         <PopoverContent>
@@ -64,7 +63,7 @@ const ExportPdfPopup = () => {
             <p>Select Range</p>
             <ExportDatePickerPopup value={date} setValue={setDate} />
             <div className="flex justify-center">
-              <Button onClick={() => handlePDF()}>Export</Button>
+              <Button onClick={() => handleExportModal()}>Export</Button>
             </div>
             {/* <button className="border border-gray-600 px-4 py-2">Export</button> */}
           </div>

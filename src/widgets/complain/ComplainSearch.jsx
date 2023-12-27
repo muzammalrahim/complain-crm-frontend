@@ -4,7 +4,12 @@ import { Button, Input } from "@material-tailwind/react";
 import DateSelector from "../htmlComponents/DateSelector";
 import SearchInput from "../htmlComponents/SearchInput";
 import ExportPdfPopup from "./ExportPdfPopup";
+import ExportCsvPopup from "./ExportCsvPopup";
+import useAxios from "@/apiConfig/axiosInstance";
+
 const ComplainSearch = ({ fetchComplains }) => {
+  const api = useAxios();
+
   const [searchData, setsearchData] = useState({});
 
   const [userId, setuserId] = useState("");
@@ -35,8 +40,19 @@ const ComplainSearch = ({ fetchComplains }) => {
         <SearchInput setuserId={setuserId} setSearch={setsearchData} />
 
         <Button onClick={handleSearch}>Search Complaints</Button>
+        {/* <div className="flex justify-center">
+          <Button
+            onClick={() =>
+              //  navigate("/complain-pdf")
+              handleDownloadCSV()
+            }
+          >
+            Export PDF
+          </Button>
+        </div> */}
         {/* <Button onClick={handleSearch}>Export as PDF</Button> */}
         <ExportPdfPopup />
+        <ExportCsvPopup />
       </div>
     </>
   );

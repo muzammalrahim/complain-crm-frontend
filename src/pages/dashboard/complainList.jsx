@@ -9,7 +9,7 @@ export const ComplainList = ({ admin, official }) => {
   const { fetchUsers, users } = useGetUsers();
   const { fetchComplains, loading, pending, complains } = useGetComplain();
   const statuses = useStatus();
-  console.log(complains, "Total Complains");
+  // console.log(complains, "Total Complains");
   // const [selectedEmployee, setselectedEmployee] = useState("");
   const [worker, setworker] = useState("");
   const [status, setstatus] = useState("");
@@ -21,7 +21,8 @@ export const ComplainList = ({ admin, official }) => {
     "Categories",
     "Subcategories",
     "Complainee",
-    "Description","By",
+    "Description",
+    "By",
     "Date",
     "Status",
     "Assign Worker",
@@ -61,6 +62,7 @@ export const ComplainList = ({ admin, official }) => {
   return (
     <div>
       <ComplainSearch fetchComplains={fetchComplains} />
+
       <div className="mt-10"></div>
       <ComplainTable
         loading={loading}

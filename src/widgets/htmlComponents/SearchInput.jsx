@@ -2,20 +2,18 @@ import useSearchUser from "@/apiHooks/user/useSearchUser";
 import { Input } from "@material-tailwind/react";
 import React, { useState } from "react";
 
-
 const SearchInput = ({ setuserId }) => {
   const [check, setCheck] = useState("");
   const [open, setopen] = useState(false);
 
   const { searchUser, users } = useSearchUser();
-  console.log(users);
+  // console.log(users);
   const handleChange = (text) => {
-    console.log(text);
+    // console.log(text);
 
     setCheck(text);
     searchUser(text);
     setopen(true);
-
   };
   return (
     <>
@@ -32,12 +30,12 @@ const SearchInput = ({ setuserId }) => {
             {users?.map((e, index) => (
               <div
                 onClick={() => {
-                  console.log(e?._id);
+                  // console.log(e?._id);
                   setuserId(e?._id);
                   setopen(false);
                   setCheck(e?.name);
                 }}
-                className="cursor-pointer border border-gray-300 py-2 px-4 hover:bg-gray-200"
+                className="cursor-pointer border border-gray-300 px-4 py-2 hover:bg-gray-200"
                 key={index}
               >
                 <div className="flex flex-col space-y-1">
@@ -54,7 +52,6 @@ const SearchInput = ({ setuserId }) => {
                   </span>
                 </div>
               </div>
-
             ))}
           </div>
         )}

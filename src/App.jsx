@@ -5,6 +5,7 @@ import PrivateRoute from "./pages/auth/PrivateRoute";
 import { SignIn, SignUp } from "./pages/auth";
 import { useUserContext } from "./context/UserContext";
 import SignInAdmin from "./pages/auth/admin/LoginAdmin";
+import ComplainPdf from "./widgets/complain/ComplainPdf";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
         />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
+        <Route path="/complain-pdf" element={<ComplainPdf />} />
         <Route
           path="/dashboard/*"
           element={<PrivateRoute element={Dashboard} />}

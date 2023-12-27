@@ -58,7 +58,7 @@ const ComplainTable = ({
     paginateComplains(1); // Set initial page to 1 when complains change
   }, [complains]);
 
-  console.log(complains);
+  // console.log(complains);
   return (
     <>
       {loading && <div>Loading...</div>}

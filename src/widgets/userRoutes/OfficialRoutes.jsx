@@ -1,10 +1,17 @@
-import { ComplainList, ShowFeedback, Users, Welcome, Worker } from "@/pages/dashboard";
+import {
+  ComplainList,
+  ShowFeedback,
+  Users,
+  Welcome,
+  Worker,
+} from "@/pages/dashboard";
 import {
   BookmarkIcon,
   ChatBubbleBottomCenterIcon,
   FlagIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
+import ComplainPdf from "../complain/ComplainPdf";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -22,6 +29,12 @@ const OfficialRoutes = {
       name: "Complaints",
       path: "/complain-list",
       element: <ComplainList admin />,
+    },
+    {
+      icon: <FlagIcon {...icon} />,
+      name: "hide",
+      path: "/pdf",
+      element: <ComplainPdf />,
     },
     {
       icon: <BookmarkIcon {...icon} />,
